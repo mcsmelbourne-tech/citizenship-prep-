@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # Page Configuration
 st.set_page_config(
-    page_title="US Citizenship Test Prep", page_icon=Payal -", layout="wide"
+    page_title="US Citizenship Test Prep", page_icon=Payal-", layout="wide"
 )
 
 # Initialize Session States
