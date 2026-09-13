@@ -1,5 +1,6 @@
 import random
 import streamlit as st
+import streamlit.components.v1 as components
 
 # Page Configuration
 st.set_page_config(
@@ -725,14 +726,12 @@ with tabs[2]:
         "March is the third month of the year.",
         "What is the capital of your state?",
     ]
-
     if st.button("Generate Reading Prompt"):
       st.session_state.active_read = random.choice(reading_pool)
 
     if "active_read" in st.session_state:
       st.warning(
-          f"**Read this sentence aloud clearly:**\n\n>"
-          f" `{st.session_state.active_read}`"
+          f"**Read this sentence aloud clearly:**\n\n> `{st.session_state.active_read}`"
       )
 
   with col_write:
@@ -744,22 +743,43 @@ with tabs[2]:
         "George Washington is the father of our country.",
         "Capitalism is the economic system of the United States.",
     ]
-
+    
     if st.button("Get Dictation Prompt Audio"):
       st.session_state.active_write = random.choice(writing_pool)
-      st.info(
-          "🔊 *[Simulated Audio Officer Dictation]*: Listen closely to the"
-          " sentence prompt."
-      )
 
     if "active_write" in st.session_state:
+      st.info("🔊 **Audio Prompt Loaded:** Click the play button below to listen to the officer's dictation.")
+
+      # Browser text-to-speech audio trigger widget
+      text_to_speak = st.session_state.active_write.replace("'", "\\'")
+      audio_html = f"""
+            <div style="margin: 10px 0;">
+                <button onclick="speakText()" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                    ▶️ Play Audio Dictation
+                </button>
+            </div>
+            <script>
+                function speakText() {{
+                    if ('speechSynthesis' in window) {{
+                        window.speechSynthesis.cancel();
+                        var utterance = new SpeechSynthesisUtterance('{text_to_speak}');
+                        utterance.rate = 0.9; // Slow down slightly for clarity
+                        utterance.pitch = 1.0;
+                        window.speechSynthesis.speak(utterance);
+                    }} else {{
+                        alert('Sorry, your browser does not support text-to-speech audio.');
+                    }}
+                }}
+            </script>
+            """
+      components.html(audio_html, height=60)
+
       user_writing = st.text_input("Type the sentence you heard word-for-word:")
       if st.button("Evaluate Writing"):
         clean_target = (
             st.session_state.active_write.strip().lower().replace(".", "")
         )
         clean_user = user_writing.strip().lower().replace(".", "")
-
         if clean_target == clean_user:
           st.success(
               "✅ Perfect! Your spelling, capitalization, and phrasing match"
