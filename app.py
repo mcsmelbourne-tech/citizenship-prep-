@@ -19,9 +19,10 @@ st.markdown(
     " interview vocabulary, civics exam, and English reading/writing tests."
 )
 
-# Sidebar Navigation Tabs
+# Sidebar Navigation Tabs (Added new vocabulary & sentence builder tab)
 tabs = st.tabs([
     "📋 N-400 & Interview Vocabulary",
+    "📚 Vocabulary & Sentence Builder",
     "🏛️ Civics Practice Bank",
     "📖 Reading & Writing Skills",
     "💡 Mock Test Simulator",
@@ -36,7 +37,6 @@ with tabs[0]:
       "USCIS officers evaluate your English comprehension using terms directly"
       " tied to your N-400 application and background questions."
   )
-  
   col1, col2 = st.columns(2)
   with col1:
     st.subheader("📚 Detailed N-400 Terms & Definitions")
@@ -93,7 +93,6 @@ with tabs[0]:
             },
         }
     }
-    
     selected_category = st.selectbox(
         "Select Vocabulary Category:", list(vocab_detailed_data.keys()), key="vocab_cat"
     )
@@ -107,7 +106,6 @@ with tabs[0]:
     st.info(f"**Meaning:** {word_info['meaning']}")
     st.markdown(f"**Application Context:** {word_info['context']}")
     st.warning(f"💡 **Officer Tip:** {word_info['officer_tip']}")
-
   with col2:
     st.subheader("⚠️ Common Background Risk Areas")
     st.markdown("Select a risk area below to deep-dive into what USCIS checks and how to prepare:")
@@ -138,7 +136,6 @@ with tabs[0]:
             "action_plan": "Obtain your complete A-file (Alien File) via FOIA requests to ensure all past immigration history is fully transparent."
         }
     }
-    
     selected_risk = st.selectbox("Select Background Risk Area:", list(risk_detailed_dict.keys()), key="risk_area")
     risk_data = risk_detailed_dict[selected_risk]
     
@@ -147,40 +144,420 @@ with tabs[0]:
     st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
     st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
 
-  # ---------------------------------------------------------
-  # NEW SECTION: Three-Sentence Examples for Key Vocab Words
-  # ---------------------------------------------------------
-  st.markdown("---")
-  st.subheader("📝 Three-Sentence Context Builder for Key Words")
-  st.markdown("Reviewing three distinct sentences helps master word usage during the N-400 interview.")
-
-  three_sentence_data = {
-      "Habitually": [
-          "The USCIS officer asked if the applicant habitually failed to pay required child support obligations over the years.",
-          "Arriving late habitually to previous appointments can create a negative impression during your official naturalization interview.",
-          "Declaring whether you have habitually used illegal substances is a mandatory part of the background review."
-      ],
-      "Verify": [
-          "You must bring your original permanent resident card and passport to verify your identity at the counter.",
-          "The immigration officer will carefully verify your employment and tax records against the submitted N-400 form.",
-          "Please double-check all your travel dates to ensure they verify correctly with your flight itineraries and stamps."
-      ],
-      "Registered": [
-          "All male citizens and permanent residents aged eighteen to twenty-five must be registered for the Selective Service.",
-          "The applicant confirmed that they were registered to vote only after becoming a lawful permanent resident.",
-          "Ensure your current residential address is correctly registered with state authorities before your interview date."
-      ]
-  }
-
-  chosen_word = st.selectbox("Choose a word to view three example sentences:", list(three_sentence_data.keys()), key="three_sent_word")
-
-  for idx, sentence in enumerate(three_sentence_data[chosen_word], 1):
-      st.markdown(f"**Sentence {idx}:** {sentence}")
-
 # ---------------------------------------------------------
-# TAB 2: Expanded Civics Question Bank (Full Official Pool)
+# TAB 2: Vocabulary & Sentence Builder (New Tab requested)
 # ---------------------------------------------------------
 with tabs[1]:
+  st.header("Comprehensive Vocabulary & Sentence Builder")
+  st.markdown("Select a thematic category, choose a vocabulary word, and review three contextual sentences built for each term[cite: 7].")
+
+  master_vocab_dict = {
+      "PEOPLE": {
+          "Adams": [
+              "John Adams was the second President of the United States.",
+              "Adams played a vital role in drafting the Declaration of Independence.",
+              "Many historians study the letters exchanged between Adams and his wife Abigail."
+          ],
+          "Lincoln": [
+              "Abraham Lincoln issued the Emancipation Proclamation during the Civil War.",
+              "Lincoln is remembered as one of the greatest American presidents.",
+              "The Lincoln Memorial stands proudly in Washington, D.C."
+          ],
+          "Washington": [
+              "George Washington was commander-in-chief of the Continental Army.",
+              "Washington became the first President of the United States.",
+              "The capital city of the nation is named after Washington."
+          ]
+      },
+      "CIVICS": {
+          "American Indians": [
+              "American Indians lived in North America before the Europeans arrived.",
+              "Many different American Indians tribes have rich cultural traditions.",
+              "The history of American Indians is an integral part of U.S. heritage."
+          ],
+          "capital": [
+              "Washington, D.C. is the capital of the United States.",
+              "Every state in the country has its own designated capital city.",
+              "Lawmakers meet at the capital building to pass new legislation."
+          ],
+          "citizens": [
+              "U.S. citizens have both important rights and unique responsibilities.",
+              "Naturalized citizens enjoy the same protections under the law.",
+              "All citizens aged eighteen and older have the right to vote."
+          ],
+          "Civil War": [
+              "The Civil War was fought between the North and the South.",
+              "Slavery was a major issue that led directly to the Civil War.",
+              "President Abraham Lincoln led the nation through the Civil War."
+          ],
+          "Congress": [
+              "Congress makes federal laws for the United States.",
+              "Congress consists of the Senate and the House of Representatives.",
+              "Members of Congress meet regularly in Washington, D.C."
+          ],
+          "Father of Our Country": [
+              "George Washington is commonly known as the Father of Our Country.",
+              "Schools teach children about the legacy of the Father of Our Country.",
+              "The Father of Our Country led the American colonies to independence."
+          ],
+          "flag": [
+              "The American flag has thirteen stripes for the original colonies.",
+              "The flag features fifty stars representing the fifty states.",
+              "Citizens show loyalty to the country when they salute the flag."
+          ],
+          "free": [
+              "The Declaration of Independence stated that the United States is free.",
+              "Colonists fought to live in a free and independent nation.",
+              "Citizens enjoy free speech guaranteed by the Constitution."
+          ],
+          "freedom of speech": [
+              "Freedom of speech is protected by the First Amendment.",
+              "Citizens can express their political opinions through freedom of speech.",
+              "Freedom of speech allows people to debate public issues openly."
+          ],
+          "President": [
+              "The President is in charge of the executive branch.",
+              "We elect a President every four years in November.",
+              "The President signs bills to make them official laws."
+          ],
+          "right": [
+              "Voting in a federal election is a right reserved for citizens.",
+              "The Constitution protects the basic right of religious freedom.",
+              "Every person has the right to a fair trial."
+          ],
+          "Senators": [
+              "There are one hundred U.S. Senators in Congress.",
+              "Each state elects two Senators to represent them.",
+              "We elect a U.S. Senator for a term of six years."
+          ],
+          "state/states": [
+              "The United States is made up of fifty individual states.",
+              "Each state has its own government and capital city.",
+              "Powers not given to the federal government belong to the states."
+          ],
+          "White House": [
+              "The President lives and works in the White House.",
+              "The White House is located in Washington, D.C.",
+              "Many tourists visit Washington, D.C., to see the White House."
+          ]
+      },
+      "PLACES": {
+          "Alaska": [
+              "Alaska is the largest state in the United States by area.",
+              "Alaska shares a border with Canada to its east.",
+              "Many people visit Alaska to see its vast wilderness."
+          ],
+          "California": [
+              "California is a major state located on the West Coast.",
+              "California shares a southern international border with Mexico.",
+              "Millions of people live and work across California."
+          ],
+          "Canada": [
+              "Canada is a country located directly north of the United States.",
+              "Many northern U.S. states share a long border with Canada.",
+              "Trade between the United States and Canada is very active."
+          ],
+          "Delaware": [
+              "Delaware was one of the thirteen original states.",
+              "Delaware is located on the East Coast of the United States.",
+              "The state of Delaware ratified the Constitution early on."
+          ],
+          "Mexico": [
+              "Mexico is located directly south of the United States.",
+              "Several American states share a border with Mexico.",
+              "Cultural ties between the United States and Mexico are very strong."
+          ],
+          "New York City": [
+              "New York City is the largest city in the state of New York.",
+              "The Statue of Liberty stands near New York City.",
+              "Many immigrants arrived through New York City historically."
+          ],
+          "United States": [
+              "The United States is a constitutional republic.",
+              "People come from all over the world to live in the United States.",
+              "The economic system of the United States is a capitalist market."
+          ],
+          "Washington": [
+              "Washington is a state located in the Pacific Northwest.",
+              "The state of Washington borders Canada to the north.",
+              "Washington is known for its beautiful mountains and coastlines."
+          ],
+          "Washington, D.C.": [
+              "Washington, D.C. is the federal capital of the country.",
+              "The federal government operates out of Washington, D.C.",
+              "Major monuments and museums are located in Washington, D.C."
+          ]
+      },
+      "MONTHS": {
+          "February": [
+              "Presidents' Day is celebrated in the month of February.",
+              "February is traditionally the shortest month of the year.",
+              "Schools often hold historical events throughout February."
+          ],
+          "May": [
+              "Memorial Day is observed on the last Monday of May.",
+              "Spring weather is usually pleasant during the month of May.",
+              "Many community events take place in May."
+          ],
+          "June": [
+              "Flag Day is celebrated annually on June fourteenth.",
+              "June marks the official beginning of the summer season.",
+              "Many families plan vacations during the month of June."
+          ],
+          "July": [
+              "Independence Day is celebrated nationwide on July fourth.",
+              "July is typically a warm summer month in the United States.",
+              "Fireworks light up the sky every July."
+          ],
+          "September": [
+              "Labor Day is celebrated on the first Monday of September.",
+              "September marks the beginning of the autumn season.",
+              "Schools reopen for classes during September."
+          ],
+          "October": [
+              "Columbus Day is observed on the second Monday of October.",
+              "The leaves change colors during October.",
+              "Fall festivals are common throughout October."
+          ],
+          "November": [
+              "Americans vote for the President in November.",
+              "Thanksgiving is celebrated on the fourth Thursday of November.",
+              "The weather becomes colder during November."
+          ]
+      },
+      "HOLIDAYS": {
+          "Presidents’ Day": [
+              "Presidents' Day honors past leaders like Washington and Lincoln.",
+              "Banks and government offices close on Presidents' Day.",
+              "Presidents' Day takes place in February."
+          ],
+          "Memorial Day": [
+              "Memorial Day honors soldiers who died while serving in the military.",
+              "Many people attend parades on Memorial Day.",
+              "Memorial Day is observed in late May."
+          ],
+          "Flag Day": [
+              "Flag Day commemorates the adoption of the American flag.",
+              "Citizens display the flag proudly on Flag Day.",
+              "Flag Day is celebrated on June fourteenth."
+          ],
+          "Independence Day": [
+              "Independence Day celebrates the adoption of the Declaration of Independence.",
+              "Communities host parades and fireworks on Independence Day.",
+              "Independence Day falls on July fourth."
+          ],
+          "Labor Day": [
+              "Labor Day honors the American worker and labor movement.",
+              "Labor Day marks the unofficial end of summer.",
+              "Parades and picnics are popular on Labor Day."
+          ],
+          "Columbus Day": [
+              "Columbus Day commemorates Christopher Columbus's arrival in the Americas.",
+              "Some regions observe Indigenous Peoples' Day alongside Columbus Day.",
+              "Columbus Day takes place in October."
+          ],
+          "Thanksgiving": [
+              "Thanksgiving is a traditional holiday for family gatherings.",
+              "People give thanks for their blessings on Thanksgiving.",
+              "Roast turkey is a traditional meal served on Thanksgiving."
+          ]
+      },
+      "VERBS": {
+          "can": [
+              "Citizens can vote in federal elections once they turn eighteen.",
+              "Anyone can practice their chosen religion freely.",
+              "You can study civics questions online."
+          ],
+          "come": [
+              "Early colonists chose to come to America for freedom.",
+              "People come to the United States seeking economic opportunities.",
+              "Citizens come together to participate in democracy."
+          ],
+          "elect": [
+              "Voters elect members of Congress every few years.",
+              "We elect a President to serve a four-year term.",
+              "Citizens have the power to elect local and national leaders."
+          ],
+          "have/has": [
+              "The United States has fifty individual states.",
+              "Every state has two Senators representing them in Congress.",
+              "The American flag has red, white, and blue stripes."
+          ],
+          "is/was/be": [
+              "George Washington was the first President of the United States.",
+              "The Constitution is the supreme law of the land.",
+              "It is important to study for the naturalization test."
+          ],
+          "lives/lived": [
+              "American Indians lived in North America for thousands of years.",
+              "The President lives in the White House during their term.",
+              "Millions of people live across the fifty states."
+          ],
+          "meets": [
+              "Congress meets in the Capitol building to make laws.",
+              "The Supreme Court meets to review constitutional questions.",
+              "The President's Cabinet meets to offer advice."
+          ],
+          "pay": [
+              "Citizens must pay federal income taxes by April fifteenth.",
+              "Taxpayers pay local and state taxes to fund public services.",
+              "Citizens do not have to pay a poll tax to vote."
+          ],
+          "vote": [
+              "Eligible citizens can vote in local and federal elections.",
+              "People vote for the President in November.",
+              "Exercising your right to vote strengthens democracy."
+          ],
+          "want": [
+              "Many colonists wanted freedom from British rule.",
+              "People want to build a better life in America.",
+              "Voters want their elected officials to listen to their concerns."
+          ]
+      },
+      "OTHER (FUNCTION)": {
+          "and": [
+              "The legislative, executive, and judicial branches share power.",
+              "The flag features red, white, and blue colors.",
+              "Citizens have both rights and responsibilities."
+          ],
+          "during": [
+              "Lincoln led the nation during the Civil War.",
+              "President Roosevelt served during World War II.",
+              "Citizens should remain informed during elections."
+          ],
+          "for": [
+              "We elect a President for a term of four years.",
+              "Colonists fought for their independence from Great Britain.",
+              "People study hard for the citizenship test."
+          ],
+          "here": [
+              "Many diverse communities thrive here in the United States.",
+              "Immigrants start new lives here.",
+              "Study materials are provided right here for your convenience."
+          ],
+          "in": [
+              "The Constitution was written in 1787.",
+              "Elections for president take place in November.",
+              "There are fifty states in the country."
+          ],
+          "of": [
+              "The Constitution is the supreme law of the land.",
+              "Thomas Jefferson wrote the Declaration of Independence.",
+              "The capital of the United States is Washington, D.C."
+          ],
+          "on": [
+              "Independence Day is celebrated on July fourth.",
+              "Tax returns are due on April fifteenth.",
+              "Supreme Court justices make decisions on major cases."
+          ],
+          "the": [
+              "The President signs bills to become laws.",
+              "The Supreme Court is the highest court in the land.",
+              "The American flag represents the nation."
+          ],
+          "to": [
+              "Everyone must obey the law.",
+              "Immigrants pledge loyalty to the United States.",
+              "Citizens have the right to vote in elections."
+          ],
+          "we": [
+              "We elect our leaders through democratic elections.",
+              "We show loyalty to the flag when reciting the pledge.",
+              "We the People established the Constitution."
+          ]
+      },
+      "OTHER (CONTENT)": {
+          "blue": [
+              "The American flag contains stripes of red, white, and blue.",
+              "The blue field on the flag holds fifty white stars.",
+              "The national colors include red, white, and blue."
+          ],
+          "dollar bill": [
+              "Famous American presidents are pictured on paper currency and the dollar bill.",
+              "George Washington's portrait appears on the one-dollar bill.",
+              "Financial transactions involve coins and the dollar bill."
+          ],
+          "fifty/50": [
+              "There are fifty states in the United States.",
+              "The flag has fifty stars to represent each state.",
+              "Fifty members represent the states in various capacities."
+          ],
+          "first": [
+              "George Washington was the first President of the United States.",
+              "The first ten amendments are called the Bill of Rights.",
+              "Labor Day falls on the first Monday of September."
+          ],
+          "largest": [
+              "Alaska is the largest state by geographical area.",
+              "The country contains some of the largest rivers in the world.",
+              "California is among the largest states by population."
+          ],
+          "most": [
+              "Most states have two representatives in the Senate.",
+              "Most citizens participate in national elections.",
+              "History tests cover most of these foundational topics."
+          ],
+          "north": [
+              "Canada is located directly north of the United States.",
+              "The Northern states fought during the Civil War.",
+              "Compass directions point north toward the pole."
+          ],
+          "one": [
+              "The Constitution is the supreme law, and no one is above it.",
+              "There is one President leading the executive branch.",
+              "Every citizen has one vote in an election."
+          ],
+          "one hundred/100": [
+              "There are one hundred Senators in the U.S. Senate.",
+              "Each state contributes to that total of one hundred senators.",
+              "Civics tests sample from a pool of one hundred official questions."
+          ],
+          "people": [
+              "We the People established the U.S. Constitution.",
+              "A democracy empowers the people to choose their leaders.",
+              "People from all over the world immigrate to America."
+          ],
+          "red": [
+              "The American flag features red and white stripes.",
+              "Red is one of the three primary national colors.",
+              "Red stripes stand alongside white and blue on the banner."
+          ],
+          "second": [
+              "John Adams was the second President.",
+              "Columbus Day is observed on the second Monday of October.",
+              "Reviewing material a second time helps with memory."
+          ],
+          "south": [
+              "Mexico borders the United States to the south.",
+              "Southern states formed a confederacy during the Civil War.",
+              "Warm weather is common in the south."
+          ],
+          "taxes": [
+              "Citizens must file and pay federal income taxes.",
+              "Colonists fought the British partly because of unfair taxes.",
+              "Local governments use taxes to fund public schools and roads."
+          ],
+          "white": [
+              "The American flag features white stars and stripes.",
+              "The White House is the official residence of the President.",
+              "White is paired with red and blue on the national flag."
+          ]
+      }
+  }
+
+  selected_cat = st.selectbox("Select Category:", list(master_vocab_dict.keys()), key="master_cat")
+  word_options = list(master_vocab_dict[selected_cat].keys())
+  selected_word = st.selectbox("Select Word:", word_options, key="master_word")
+
+  st.markdown(f"### Sentences for **{selected_word}**:")
+  sentences = master_vocab_dict[selected_cat][selected_word]
+  for idx, sentence in enumerate(sentences, 1):
+      st.markdown(f"* **Sentence {idx}:** {sentence}")
+
+# ---------------------------------------------------------
+# TAB 3: Expanded Civics Question Bank (Full Official Pool)
+# ---------------------------------------------------------
+with tabs[2]:
   st.header("Civics Question Bank (Principles & History)")
   st.markdown(
       "Practice questions spanning American Government, American History, and"
@@ -779,14 +1156,14 @@ with tabs[1]:
       },
   ]
 
-  selected_cat = st.selectbox(
+  selected_cat_civics = st.selectbox(
       "Filter by Category:",
       ["All"] + list(set([item["category"] for item in civics_bank])),
   )
   filtered_bank = (
       civics_bank
-      if selected_cat == "All"
-      else [item for item in civics_bank if item["category"] == selected_cat]
+      if selected_cat_civics == "All"
+      else [item for item in civics_bank if item["category"] == selected_cat_civics]
   )
   q_idx = st.selectbox(
       "Select a question:",
@@ -797,9 +1174,9 @@ with tabs[1]:
     st.success(f"**Correct Answer:** {filtered_bank[q_idx]['a']}")
 
 # ---------------------------------------------------------
-# TAB 3: English Reading & Writing Skill Practice
+# TAB 4: English Reading & Writing Skill Practice
 # ---------------------------------------------------------
-with tabs[2]:
+with tabs[3]:
   st.header("Interactive Reading & Writing Practice")
   st.markdown(
       "To pass the English requirement, you must correctly read out loud 1 of"
@@ -877,9 +1254,9 @@ with tabs[2]:
           )
 
 # ---------------------------------------------------------
-# TAB 4: Mock Test Simulator (15 Questions)
+# TAB 5: Mock Test Simulator (15 Questions)
 # ---------------------------------------------------------
-with tabs[3]:
+with tabs[4]:
   st.header("Full Interview & Test Simulator (15 Questions)")
   st.markdown(
       "Simulate the actual testing environment. You will be tested on **15 random civics"
