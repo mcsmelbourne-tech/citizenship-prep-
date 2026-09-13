@@ -41,41 +41,47 @@ with tabs[0]:
 
   with col1:
     st.subheader("📚 Key N-400 Terms & Synonyms")
-    vocab_dict = {
-        "Habitually": "Often or repeatedly.",
-        "Verify": "Prove that something is true.",
-        "Marital Status": (
-            "Whether you are single, married, divorced, or widowed."
-        ),
-        "Swear": "To promise under oath to tell the truth.",
-        "Registered": "Signed up officially (e.g., to vote or selective service).",
-        "Spouse": "Your husband or wife.",
-        "Dependent": (
-            "Someone you support financially, such as a child."
-        ),
-        "Citation": (
-            "An official written notice or traffic ticket from law enforcement"
-            "."
-        ),
-        "Affiliation": (
-            "A formal connection or involvement with an organization."
-        ),
+    vocab_data = {
+        "General Application": {
+            "Habitually": "Often or repeatedly.",
+            "Verify": "Prove that something is true.",
+            "Registered": "Signed up officially (e.g., to vote or selective service).",
+        },
+        "Family & Status": {
+            "Marital Status": "Whether you are single, married, divorced, or widowed.",
+            "Spouse": "Your husband or wife.",
+            "Dependent": "Someone you support financially, such as a child.",
+        },
+        "Legal & Proceedings": {
+            "Swear": "To promise under oath to tell the truth.",
+            "Citation": "An official written notice or traffic ticket from law enforcement.",
+            "Affiliation": "A formal connection or involvement with an organization.",
+        }
     }
 
-    selected_vocab = st.selectbox(
-        "Select a vocabulary word to review:", list(vocab_dict.keys())
+    selected_category = st.selectbox(
+        "Select Vocabulary Category:", list(vocab_data.keys())
     )
-    st.info(f"**Meaning:** {vocab_dict[selected_vocab]}")
+    
+    category_words = vocab_data[selected_category]
+    selected_vocab = st.selectbox(
+        "Select a vocabulary word to review:", list(category_words.keys())
+    )
+    st.info(f"**Meaning:** {category_words[selected_vocab]}")
 
   with col2:
     st.subheader("⚠️ Common Background Risk Areas")
-    st.markdown("""
-        Be ready to address these parts clearly during your review:
-        * **Taxes:** Have you ever failed to file a federal, state, or local tax return?
-        * **Organizations:** Have you ever been a member of any terrorist group, communist party, or total-control organization?
-        * **Lie / Misrepresentation:** Have you ever given false information to a U.S. government official to gain entry or benefits?
-        * **Removal Proceedings:** Have you ever been placed in removal, exclusion, rescission, or deportation proceedings?
-        """)
+    st.markdown("Select a risk area below to review what USCIS officers look for:")
+    
+    risk_dict = {
+        "Taxes": "Have you ever failed to file a federal, state, or local tax return since you became a permanent resident? (Guidance: Ensure all past tax transcripts are accounted for and any payment plans are active.)",
+        "Organizations": "Have you ever been a member of, or associated with, any terrorist group, communist party, totalitarian organization, or terrorist organization?",
+        "Lie / Misrepresentation": "Have you ever given any false, fraudulent, or misleading information to a U.S. government official to gain entry or immigration benefits?",
+        "Removal Proceedings": "Have you ever been placed in removal, exclusion, rescission, or deportation proceedings, or received a notice to appear in immigration court?"
+    }
+
+    selected_risk = st.selectbox("Select Background Risk Area:", list(risk_dict.keys()))
+    st.warning(f"**Review Guidance for [{selected_risk}]:**\n\n{risk_dict[selected_risk]}")
 
 # ---------------------------------------------------------
 # TAB 2: Expanded Civics Question Bank (Full Official Pool)
