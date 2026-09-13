@@ -36,9 +36,8 @@ with tabs[0]:
       "USCIS officers evaluate your English comprehension using terms directly"
       " tied to your N-400 application and background questions."
   )
-
+  
   col1, col2 = st.columns(2)
-
   with col1:
     st.subheader("📚 Detailed N-400 Terms & Definitions")
     vocab_detailed_data = {
@@ -94,7 +93,7 @@ with tabs[0]:
             },
         }
     }
-
+    
     selected_category = st.selectbox(
         "Select Vocabulary Category:", list(vocab_detailed_data.keys()), key="vocab_cat"
     )
@@ -139,7 +138,7 @@ with tabs[0]:
             "action_plan": "Obtain your complete A-file (Alien File) via FOIA requests to ensure all past immigration history is fully transparent."
         }
     }
-
+    
     selected_risk = st.selectbox("Select Background Risk Area:", list(risk_detailed_dict.keys()), key="risk_area")
     risk_data = risk_detailed_dict[selected_risk]
     
@@ -147,6 +146,36 @@ with tabs[0]:
     st.markdown(f"**Risk Level:** **{risk_data['risk_level']}**")
     st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
     st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
+
+  # ---------------------------------------------------------
+  # NEW SECTION: Three-Sentence Examples for Key Vocab Words
+  # ---------------------------------------------------------
+  st.markdown("---")
+  st.subheader("📝 Three-Sentence Context Builder for Key Words")
+  st.markdown("Reviewing three distinct sentences helps master word usage during the N-400 interview.")
+
+  three_sentence_data = {
+      "Habitually": [
+          "The USCIS officer asked if the applicant habitually failed to pay required child support obligations over the years.",
+          "Arriving late habitually to previous appointments can create a negative impression during your official naturalization interview.",
+          "Declaring whether you have habitually used illegal substances is a mandatory part of the background review."
+      ],
+      "Verify": [
+          "You must bring your original permanent resident card and passport to verify your identity at the counter.",
+          "The immigration officer will carefully verify your employment and tax records against the submitted N-400 form.",
+          "Please double-check all your travel dates to ensure they verify correctly with your flight itineraries and stamps."
+      ],
+      "Registered": [
+          "All male citizens and permanent residents aged eighteen to twenty-five must be registered for the Selective Service.",
+          "The applicant confirmed that they were registered to vote only after becoming a lawful permanent resident.",
+          "Ensure your current residential address is correctly registered with state authorities before your interview date."
+      ]
+  }
+
+  chosen_word = st.selectbox("Choose a word to view three example sentences:", list(three_sentence_data.keys()), key="three_sent_word")
+
+  for idx, sentence in enumerate(three_sentence_data[chosen_word], 1):
+      st.markdown(f"**Sentence {idx}:** {sentence}")
 
 # ---------------------------------------------------------
 # TAB 2: Expanded Civics Question Bank (Full Official Pool)
@@ -157,10 +186,8 @@ with tabs[1]:
       "Practice questions spanning American Government, American History, and"
       " Integrated Civics."
   )
-
-  # Comprehensive Civics Database
+  
   civics_bank = [
-      # American Government - Principles of Democracy
       {
           "category": "American Government",
           "q": "What is the supreme law of the land?",
@@ -232,7 +259,6 @@ with tabs[1]:
               " is above the law."
           ),
       },
-      # System of Government
       {
           "category": "American Government",
           "q": "Name one branch or part of the government.",
@@ -306,7 +332,7 @@ with tabs[1]:
       {
           "category": "American Government",
           "q": "What is the name of the President of the United States now?",
-          "a": "Check current office holder (Joe Biden / current sitting president)",
+          "a": "Check current office holder",
       },
       {
           "category": "American Government",
@@ -401,7 +427,6 @@ with tabs[1]:
           "q": "What is the capital of your state?",
           "a": "Answers will vary by state.",
       },
-      # American History - Colonial Period and Independence
       {
           "category": "American History",
           "q": "What are two major political parties in the United States?",
@@ -566,7 +591,6 @@ with tabs[1]:
           "q": "Who was the first President?",
           "a": "George Washington",
       },
-      # 1800s & Recent History
       {
           "category": "American History",
           "q": "What territory did the United States buy from France in 1803?",
@@ -671,7 +695,6 @@ with tabs[1]:
               " Mohegan, Huron, Oneida, Lakota, Crow, Hopi, Inuit"
           ),
       },
-      # Integrated Civics - Geography & Symbols
       {
           "category": "Integrated Civics",
           "q": "Name one of the two longest rivers in the United States.",
@@ -760,19 +783,16 @@ with tabs[1]:
       "Filter by Category:",
       ["All"] + list(set([item["category"] for item in civics_bank])),
   )
-
   filtered_bank = (
       civics_bank
       if selected_cat == "All"
       else [item for item in civics_bank if item["category"] == selected_cat]
   )
-
   q_idx = st.selectbox(
       "Select a question:",
       options=range(len(filtered_bank)),
       format_func=lambda x: filtered_bank[x]["q"],
   )
-
   if st.button("Show Answer"):
     st.success(f"**Correct Answer:** {filtered_bank[q_idx]['a']}")
 
@@ -785,9 +805,8 @@ with tabs[2]:
       "To pass the English requirement, you must correctly read out loud 1 of"
       " 3 sentences and write 1 of 3 dictated sentences correctly."
   )
-
+  
   col_read, col_write = st.columns(2)
-
   with col_read:
     st.subheader("📖 Reading Practice Engine")
     reading_pool = [
@@ -799,7 +818,6 @@ with tabs[2]:
     ]
     if st.button("Generate Reading Prompt"):
       st.session_state.active_read = random.choice(reading_pool)
-
     if "active_read" in st.session_state:
       st.warning(
           f"**Read this sentence aloud clearly:**\n\n> `{st.session_state.active_read}`"
@@ -817,10 +835,8 @@ with tabs[2]:
     
     if st.button("Get Dictation Prompt Audio"):
       st.session_state.active_write = random.choice(writing_pool)
-
     if "active_write" in st.session_state:
       st.info("🔊 **Audio Prompt Loaded:** Click the play button below to listen to the officer's dictation.")
-
       text_to_speak = st.session_state.active_write.replace("'", "\\'")
       audio_html = f"""
             <div style="margin: 10px 0;">
@@ -843,7 +859,6 @@ with tabs[2]:
             </script>
             """
       components.html(audio_html, height=60)
-
       user_writing = st.text_input("Type the sentence you heard word-for-word:")
       if st.button("Evaluate Writing"):
         clean_target = (
@@ -870,13 +885,11 @@ with tabs[3]:
       "Simulate the actual testing environment. You will be tested on **15 random civics"
       " questions**. Answer as many as you can accurately!"
   )
-
   if st.button("Start 15-Question Simulation Test"):
     st.session_state.sim_questions = random.sample(
         civics_bank, min(15, len(civics_bank))
     )
     st.session_state.sim_started = True
-
   if st.session_state.get("sim_started", False):
     with st.form("simulation_form"):
       user_answers = {}
@@ -885,13 +898,9 @@ with tabs[3]:
         user_answers[i] = st.text_input(
             f"Your answer for Q{i+1}", key=f"sim_ans_{i}"
         )
-
       submitted = st.form_submit_button("Submit All 15 Answers")
       if submitted:
         st.subheader("Simulation Results & Scorecard")
-        score = 0
-        total_q = len(st.session_state.sim_questions)
-        
         for i, item in enumerate(st.session_state.sim_questions):
           st.write(f"**Q{i+1}:** {item['q']}")
           st.write(f"Your input: `{user_answers[i]}`")
