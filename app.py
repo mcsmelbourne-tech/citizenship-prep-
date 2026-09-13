@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # Page Configuration
 st.set_page_config(
-    page_title="US Citizenship Test Prep", page_icon="🇺🇸", layout="wide"
+    page_title="US Citizenship Test Prep for Payal", layout="wide"
 )
 
 # Initialize Session States
@@ -13,313 +13,25 @@ if "civics_score" not in st.session_state:
 if "quiz_active" not in st.session_state:
     st.session_state.quiz_active = False
 
-st.title("🇺🇸 U.S. Citizenship & Naturalization Prep Hub")
+st.title("🇺🇸 U.S. Citizenship & Naturalization Prep Hub for Payal")
 st.markdown(
     "Your comprehensive study companion for the N-400 application review, "
     "interview vocabulary, civics exam, and English reading/writing tests."
 )
 
-# Sidebar / Top Navigation Tabs
+# Sidebar / Top Navigation Tabs (N-400 Combined Tab moved to the end)
 tabs = st.tabs([
-    "📑 Form N-400 Breakdown",
-    "📋 N-400 & Interview Vocabulary",
     "📚 Vocabulary & Sentence Builder",
     "🏛️ Civics Practice Bank",
     "📖 Reading & Writing Skills",
     "💡 Mock Test Simulator",
+    "📑 Form N-400 & Interview Vocabulary Hub",
 ])
 
 # ---------------------------------------------------------
-# TAB 0: Form N-400 Breakdown (Parts & Questions)
+# TAB 0: Vocabulary & Sentence Builder
 # ---------------------------------------------------------
 with tabs[0]:
-    st.header("Form N-400 (Application for Naturalization) Overview")
-    st.markdown(
-        "Form N-400 is divided into **18 distinct parts**. Below is a detailed section-by-section "
-        "breakdown showing what each part asks for, key questions, and applicant guidance."
-    )
-
-    n400_structure = {
-        "Part 1: Information About Your Eligibility": {
-            "description": "Determines under which legal basis you are applying for naturalization.",
-            "questions": [
-                "Have you been a Lawful Permanent Resident (LPR) for at least 5 years?",
-                "Have you been an LPR for at least 3 years and married to a U.S. citizen?",
-                "Are you applying based on qualifying military service?"
-            ],
-            "instructions": "Select only the single eligibility category that applies to your situation."
-        },
-        "Part 2: Information About You": {
-            "description": "Gathers your current legal personal details and background identity.",
-            "questions": [
-                "What is your full legal name and name as it appears on your Green Card?",
-                "Have you used any other names or aliases?",
-                "Do you want to legally change your name?",
-                "What is your Date of Birth, Country of Birth, and Social Security Number?"
-            ],
-            "instructions": "Ensure all names match your official documents. If requesting a legal name change, it will be finalized at oath."
-        },
-        "Part 3: Accommodations for Individuals With Disabilities": {
-            "description": "Requests special accommodations or disability exceptions for the interview.",
-            "questions": [
-                "Do you need accommodations for a disability (e.g., wheelchair access, sign language interpreter, braille)?",
-                "Are you applying for a medical disability waiver (Form N-648) for English/Civics requirements?"
-            ],
-            "instructions": "Disclose any physical or mental impairments that require assistance during the interview test."
-        },
-        "Part 4: Contact Information": {
-            "description": "Provides reliable communication channels for USCIS notices.",
-            "questions": [
-                "What are your current phone numbers (daytime, evening, mobile)?",
-                "What is your current email address?"
-            ],
-            "instructions": "Provide active contact info where USCIS can reach you regarding appointment updates."
-        },
-        "Part 5: Information About Your Residence": {
-            "description": "Establishes physical presence and state/district jurisdiction.",
-            "questions": [
-                "Where have you lived during the past 5 years (or 3 years if marrying a citizen)?",
-                "What are the exact start and end dates for each address?"
-            ],
-            "instructions": "List all physical locations where you resided without gaps for the required lookback period."
-        },
-        "Part 6: Information About Your Parents": {
-            "description": "Checks if you may already be a U.S. citizen through parentage.",
-            "questions": [
-                "Were your parents married before your 18th birthday?",
-                "Was your mother or father a U.S. citizen before you turned 18?"
-            ],
-            "instructions": "If either parent was a U.S. citizen before you turned 18, you may already hold derived citizenship."
-        },
-        "Part 7: Biographic Information": {
-            "description": "Standard physical characteristics recorded for identity verification.",
-            "questions": [
-                "Ethnicity, Race, Height, Weight, Eye Color, and Hair Color."
-            ],
-            "instructions": "Select the attributes that match your official state driver's license or passport ID."
-        },
-        "Part 8: Information About Your Employment and Schools Attended": {
-            "description": "Tracks your educational and work history.",
-            "questions": [
-                "Where have you worked or attended school full-time/part-time in the past 5 years?",
-                "What were your job titles or fields of study?"
-            ],
-            "instructions": "Account for all 5 years (or 3 years), including periods of self-employment or unemployment."
-        },
-        "Part 9: Time Outside the United States": {
-            "description": "Verifies continuous residence and physical presence compliance.",
-            "questions": [
-                "How many total days did you spend outside the U.S. in the last 5 years?",
-                "How many total trips of 24 hours or longer have you taken outside the U.S.?",
-                "List all trips outside the U.S. lasting 6 months or longer."
-            ],
-            "instructions": "Carefully calculate travel dates using passport stamps and flight itineraries to avoid physical presence issues."
-        },
-        "Part 10: Information About Your Marital History": {
-            "description": "Evaluates current and previous marriages for validity.",
-            "questions": [
-                "What is your current marital status?",
-                "How many times have you been married?",
-                "What is your spouse's name, DOB, citizenship status, and employment?",
-                "How many times has your current spouse been married?"
-            ],
-            "instructions": "Bring original marriage certificates and prior divorce/annulment decrees for both yourself and your spouse."
-        },
-        "Part 11: Information About Your Children": {
-            "description": "Identifies all legal children, stepchildren, and adopted children.",
-            "questions": [
-                "How many total children do you have?",
-                "What are their names, dates of birth, countries of birth, and current addresses?",
-                "Are you complying with child support obligations?"
-            ],
-            "instructions": "Include all living children regardless of age, marital status, or location."
-        },
-        "Part 12: Additional Information (Good Moral Character Questions)": {
-            "description": "Crucial review of legal, tax, civic, and moral history (Over 50 Yes/No questions).",
-            "questions": [
-                "Have you ever claimed to be a U.S. citizen in writing or any other way?",
-                "Have you ever registered to vote or voted in any U.S. election?",
-                "Do you owe any overdue federal, state, or local taxes?",
-                "Have you ever been a member of any organization, association, communist party, or terrorist group?",
-                "Have you ever been arrested, cited, detained, or charged with any crime or offense (including traffic tickets)?",
-                "Have you ever given false information to a government official or lied to gain entry?"
-            ],
-            "instructions": "Answer truthfully. Officers review every question line-by-line during the interview."
-        },
-        "Part 13: Applicant's Statement, Contact Info, and Signature": {
-            "description": "Certifies that the applicant understands and verifies the provided information.",
-            "questions": [
-                "Can you read and understand English, or did you complete the form with an interpreter?",
-                "Signature certifying under penalty of perjury that all contents are accurate."
-            ],
-            "instructions": "Sign and date the form before submission."
-        },
-        "Part 14: Interpreter's Contact Info and Certification": {
-            "description": "Required if an interpreter translated the application questions for you.",
-            "questions": [
-                "Interpreter's full name, agency, contact details, and signature."
-            ],
-            "instructions": "Complete only if an interpreter helped you complete the application."
-        },
-        "Part 15: Contact Info and Signature of Person Preparing Form": {
-            "description": "Required if an attorney, legal representative, or preparer filled out the form.",
-            "questions": [
-                "Preparer's contact details, business name, and signature."
-            ],
-            "instructions": "Complete only if someone else prepared the application on your behalf."
-        },
-        "Part 16: Signature at Interview (DO NOT COMPLETE UNTIL INTERVIEW)": {
-            "description": "Official confirmation performed in front of the USCIS officer.",
-            "questions": [
-                "Affirmation that the contents of the application remain true and correct at the time of interview."
-            ],
-            "instructions": "Leave this section completely blank until instructed by the officer during your in-person interview."
-        },
-        "Part 17: Oath of Allegiance": {
-            "description": "The legal pledge of loyalty to the United States.",
-            "questions": [
-                "Do you support the Constitution and form of government of the U.S.?",
-                "Are you willing to take the full Oath of Allegiance to the United States?",
-                "If required, are you willing to bear arms or perform noncombatant service for the U.S.?"
-            ],
-            "instructions": "Understand the responsibilities tied to allegiance before the final oath ceremony."
-        }
-    }
-
-    selected_n400_part = st.selectbox("Select N-400 Part to Review:", list(n400_structure.keys()))
-    part_details = n400_structure[selected_n400_part]
-
-    st.subheader(f"📌 Overview")
-    st.info(part_details["description"])
-
-    st.subheader("❓ Key Questions Asked in this Section:")
-    for q in part_details["questions"]:
-        st.markdown(f"* {q}")
-
-    st.subheader("💡 USCIS Instructions & Tips:")
-    st.warning(part_details["instructions"])
-
-# ---------------------------------------------------------
-# TAB 1: N-400 Review & Interview Vocabulary Builder
-# ---------------------------------------------------------
-with tabs[1]:
-    st.header("Form N-400 Background & Interview Vocabulary")
-    st.markdown(
-        "USCIS officers evaluate your English comprehension using terms directly "
-        "tied to your N-400 application and background questions."
-    )
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("📚 Detailed N-400 Terms & Definitions")
-        vocab_detailed_data = {
-            "General Application": {
-                "Habitually": {
-                    "meaning": "Often or repeatedly, as a regular pattern or habit.",
-                    "context": "Used in questions about alcohol consumption, support of dependents, or general conduct.",
-                    "officer_tip": "Be completely honest if asked about habits. Inconsistency with your written form can cause delays."
-                },
-                "Verify": {
-                    "meaning": "To prove, check, or establish that something is true, accurate, or correct.",
-                    "context": "Refers to reviewing documents, tax papers, or personal data entries.",
-                    "officer_tip": "Bring original copies of all identity and tax documents to the interview to verify instantly."
-                },
-                "Registered": {
-                    "meaning": "Signed up officially with a government body or official database.",
-                    "context": "Relates to selective service registration, voting rolls, or state registries.",
-                    "officer_tip": "Men aged 18-25 must show proof of Selective Service registration."
-                },
-            },
-            "Family & Status": {
-                "Marital Status": {
-                    "meaning": "Your current legal standing regarding marriage (single, married, divorced, or widowed).",
-                    "context": "Determines whether you file under the 3-year or 5-year permanent resident rule.",
-                    "officer_tip": "Bring marriage certificates, divorce decrees, or death certificates of past spouses."
-                },
-                "Spouse": {
-                    "meaning": "Your legally recognized husband or wife.",
-                    "context": "Core to evaluating joint tax returns, residency timelines, and family petitions.",
-                    "officer_tip": "If your spouse is a U.S. citizen, be prepared to answer questions about their background too."
-                },
-                "Dependent": {
-                    "meaning": "Someone who relies on you primarily for financial support, such as a minor child or relative.",
-                    "context": "Used when reviewing household members, child support obligations, and tax exemptions.",
-                    "officer_tip": "Keep records of child support payments if you have children from a previous relationship."
-                },
-            },
-            "Legal & Proceedings": {
-                "Swear": {
-                    "meaning": "To make a solemn, formal promise under oath, invoking truthfulness.",
-                    "context": "Done right at the beginning of your interview before answering any questions.",
-                    "officer_tip": "Understand that lying after swearing an oath constitutes perjury under federal law."
-                },
-                "Citation": {
-                    "meaning": "An official written notice, warning, or ticket issued by law enforcement (e.g., traffic violations).",
-                    "context": "Appears in Part 12 of the N-400 regarding arrests, detentions, and traffic tickets.",
-                    "officer_tip": "Minor traffic tickets under $500 usually don't block citizenship, but failing to disclose them will."
-                },
-                "Affiliation": {
-                    "meaning": "A formal connection, membership, or association with a club, group, or organization.",
-                    "context": "Scrutinizes past or present ties to political parties, community groups, or ideological associations.",
-                    "officer_tip": "Review all professional and social organizations you belong to before the interview."
-                },
-            }
-        }
-        selected_category = st.selectbox(
-            "Select Vocabulary Category:", list(vocab_detailed_data.keys()), key="vocab_cat"
-        )
-        
-        category_words = vocab_detailed_data[selected_category]
-        selected_vocab = st.selectbox(
-            "Select a vocabulary word to review:", list(category_words.keys()), key="vocab_word"
-        )
-        
-        word_info = category_words[selected_vocab]
-        st.info(f"**Meaning:** {word_info['meaning']}")
-        st.markdown(f"**Application Context:** {word_info['context']}")
-        st.warning(f"💡 **Officer Tip:** {word_info['officer_tip']}")
-
-    with col2:
-        st.subheader("⚠️ Common Background Risk Areas")
-        st.markdown("Select a risk area below to deep-dive into what USCIS checks and how to prepare:")
-        
-        risk_detailed_dict = {
-            "Taxes": {
-                "question": "Have you ever failed to file a federal, state, or local tax return since you became a lawful permanent resident?",
-                "risk_level": "High Risk",
-                "pitfalls": "Omission of state returns, unfiled years due to low income, or failure to pay agreed-upon tax arrears.",
-                "action_plan": "Pull official IRS tax transcripts for the last 3-5 years. If on a payment plan with the IRS, bring proof of regular payments."
-            },
-            "Organizations": {
-                "question": "Have you ever been a member of, or associated with, any terrorist group, communist party, totalitarian organization, or militia?",
-                "risk_level": "Critical Risk",
-                "pitfalls": "Inadvertent membership in mandatory civic groups in home countries that held political affiliations.",
-                "action_plan": "Consult an immigration attorney immediately if you had any historical affiliations with governmental or political mass organizations."
-            },
-            "Lie / Misrepresentation": {
-                "question": "Have you ever given any false, fraudulent, or misleading information to a U.S. government official to gain entry or benefits?",
-                "risk_level": "Severe Risk",
-                "pitfalls": "Discrepancies between historical visa applications and your current N-400 disclosures.",
-                "action_plan": "Disclose and clarify historical record discrepancies upfront with supporting documentation or legal counsel."
-            },
-            "Removal Proceedings": {
-                "question": "Have you ever been placed in removal, exclusion, rescission, or deportation proceedings?",
-                "risk_level": "High Risk",
-                "pitfalls": "Failing to disclose past border administrative actions, expedited removals, or old immigration court notices.",
-                "action_plan": "Obtain your complete A-file (Alien File) via FOIA requests to ensure all past immigration history is fully transparent."
-            }
-        }
-        selected_risk = st.selectbox("Select Background Risk Area:", list(risk_detailed_dict.keys()), key="risk_area")
-        risk_data = risk_detailed_dict[selected_risk]
-        
-        st.error(f"**Official Question:** `{risk_data['question']}`")
-        st.markdown(f"**Risk Level:** **{risk_data['risk_level']}**")
-        st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
-        st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
-
-# ---------------------------------------------------------
-# TAB 2: Vocabulary & Sentence Builder
-# ---------------------------------------------------------
-with tabs[2]:
     st.header("Comprehensive Vocabulary & Sentence Builder")
     st.markdown("Select a thematic category, choose a vocabulary word, and review three contextual sentences built for each term.")
     master_vocab_dict = {
@@ -724,9 +436,9 @@ with tabs[2]:
         st.markdown(f"* **Sentence {idx}:** {sentence}")
 
 # ---------------------------------------------------------
-# TAB 3: Civics Question Bank
+# TAB 1: Civics Question Bank
 # ---------------------------------------------------------
-with tabs[3]:
+with tabs[1]:
     st.header("Civics Question Bank (Principles & History)")
     st.markdown(
         "Practice questions spanning American Government, American History, and "
@@ -851,9 +563,9 @@ with tabs[3]:
         st.success(f"**Correct Answer:** {filtered_bank[q_idx]['a']}")
 
 # ---------------------------------------------------------
-# TAB 4: English Reading & Writing Skill Practice
+# TAB 2: English Reading & Writing Skill Practice
 # ---------------------------------------------------------
-with tabs[4]:
+with tabs[2]:
     st.header("Interactive Reading & Writing Practice")
     st.markdown(
         "To pass the English requirement, you must correctly read out loud 1 of "
@@ -929,9 +641,9 @@ with tabs[4]:
                     )
 
 # ---------------------------------------------------------
-# TAB 5: Mock Test Simulator (15 Questions)
+# TAB 3: Mock Test Simulator (15 Questions)
 # ---------------------------------------------------------
-with tabs[5]:
+with tabs[3]:
     st.header("Full Interview & Test Simulator (15 Questions)")
     st.markdown(
         "Simulate the actual testing environment. You will be tested on **15 random civics "
@@ -958,3 +670,291 @@ with tabs[5]:
                     st.write(f"Your input: `{user_answers[i]}`")
                     st.info(f"Official Answer Key: {item['a']}")
                     st.divider()
+
+# ---------------------------------------------------------
+# TAB 4 (Last Tab): Form N-400 Breakdown & Interview Vocabulary Hub
+# ---------------------------------------------------------
+with tabs[4]:
+    st.header("Form N-400 Breakdown & Interview Vocabulary Hub")
+    st.markdown(
+        "Explore both the detailed step-by-step section breakdown of Form N-400 "
+        "and the essential background interview vocabulary required by USCIS officers."
+    )
+    
+    sub_tab1, sub_tab2 = st.tabs(["📑 Form N-400 Breakdown", "📋 Interview Vocabulary & Risk Areas"])
+    
+    with sub_tab1:
+        st.subheader("Form N-400 (Application for Naturalization) Overview")
+        st.markdown(
+            "Form N-400 is divided into **18 distinct parts**. Below is a detailed section-by-section "
+            "breakdown showing what each part asks for, key questions, and applicant guidance."
+        )
+        n400_structure = {
+            "Part 1: Information About Your Eligibility": {
+                "description": "Determines under which legal basis you are applying for naturalization.",
+                "questions": [
+                    "Have you been a Lawful Permanent Resident (LPR) for at least 5 years?",
+                    "Have you been an LPR for at least 3 years and married to a U.S. citizen?",
+                    "Are you applying based on qualifying military service?"
+                ],
+                "instructions": "Select only the single eligibility category that applies to your situation."
+            },
+            "Part 2: Information About You": {
+                "description": "Gathers your current legal personal details and background identity.",
+                "questions": [
+                    "What is your full legal name and name as it appears on your Green Card?",
+                    "Have you used any other names or aliases?",
+                    "Do you want to legally change your name?",
+                    "What is your Date of Birth, Country of Birth, and Social Security Number?"
+                ],
+                "instructions": "Ensure all names match your official documents. If requesting a legal name change, it will be finalized at oath."
+            },
+            "Part 3: Accommodations for Individuals With Disabilities": {
+                "description": "Requests special accommodations or disability exceptions for the interview.",
+                "questions": [
+                    "Do you need accommodations for a disability (e.g., wheelchair access, sign language interpreter, braille)?",
+                    "Are you applying for a medical disability waiver (Form N-648) for English/Civics requirements?"
+                ],
+                "instructions": "Disclose any physical or mental impairments that require assistance during the interview test."
+            },
+            "Part 4: Contact Information": {
+                "description": "Provides reliable communication channels for USCIS notices.",
+                "questions": [
+                    "What are your current phone numbers (daytime, evening, mobile)?",
+                    "What is your current email address?"
+                ],
+                "instructions": "Provide active contact info where USCIS can reach you regarding appointment updates."
+            },
+            "Part 5: Information About Your Residence": {
+                "description": "Establishes physical presence and state/district jurisdiction.",
+                "questions": [
+                    "Where have you lived during the past 5 years (or 3 years if marrying a citizen)?",
+                    "What are the exact start and end dates for each address?"
+                ],
+                "instructions": "List all physical locations where you resided without gaps for the required lookback period."
+            },
+            "Part 6: Information About Your Parents": {
+                "description": "Checks if you may already be a U.S. citizen through parentage.",
+                "questions": [
+                    "Were your parents married before your 18th birthday?",
+                    "Was your mother or father a U.S. citizen before you turned 18?"
+                ],
+                "instructions": "If either parent was a U.S. citizen before you turned 18, you may already hold derived citizenship."
+            },
+            "Part 7: Biographic Information": {
+                "description": "Standard physical characteristics recorded for identity verification.",
+                "questions": [
+                    "Ethnicity, Race, Height, Weight, Eye Color, and Hair Color."
+                ],
+                "instructions": "Select the attributes that match your official state driver's license or passport ID."
+            },
+            "Part 8: Information About Your Employment and Schools Attended": {
+                "description": "Tracks your educational and work history.",
+                "questions": [
+                    "Where have you worked or attended school full-time/part-time in the past 5 years?",
+                    "What were your job titles or fields of study?"
+                ],
+                "instructions": "Account for all 5 years (or 3 years), including periods of self-employment or unemployment."
+            },
+            "Part 9: Time Outside the United States": {
+                "description": "Verifies continuous residence and physical presence compliance.",
+                "questions": [
+                    "How many total days did you spend outside the U.S. in the last 5 years?",
+                    "How many total trips of 24 hours or longer have you taken outside the U.S.?",
+                    "List all trips outside the U.S. lasting 6 months or longer."
+                ],
+                "instructions": "Carefully calculate travel dates using passport stamps and flight itineraries to avoid physical presence issues."
+            },
+            "Part 10: Information About Your Marital History": {
+                "description": "Evaluates current and previous marriages for validity.",
+                "questions": [
+                    "What is your current marital status?",
+                    "How many times have you been married?",
+                    "What is your spouse's name, DOB, citizenship status, and employment?",
+                    "How many times has your current spouse been married?"
+                ],
+                "instructions": "Bring original marriage certificates and prior divorce/annulment decrees for both yourself and your spouse."
+            },
+            "Part 11: Information About Your Children": {
+                "description": "Identifies all legal children, stepchildren, and adopted children.",
+                "questions": [
+                    "How many total children do you have?",
+                    "What are their names, dates of birth, countries of birth, and current addresses?",
+                    "Are you complying with child support obligations?"
+                ],
+                "instructions": "Include all living children regardless of age, marital status, or location."
+            },
+            "Part 12: Additional Information (Good Moral Character Questions)": {
+                "description": "Crucial review of legal, tax, civic, and moral history (Over 50 Yes/No questions).",
+                "questions": [
+                    "Have you ever claimed to be a U.S. citizen in writing or any other way?",
+                    "Have you ever registered to vote or voted in any U.S. election?",
+                    "Do you owe any overdue federal, state, or local taxes?",
+                    "Have you ever been a member of any organization, association, communist party, or terrorist group?",
+                    "Have you ever been arrested, cited, detained, or charged with any crime or offense (including traffic tickets)?",
+                    "Have you ever given false information to a government official or lied to gain entry?"
+                ],
+                "instructions": "Answer truthfully. Officers review every question line-by-line during the interview."
+            },
+            "Part 13: Applicant's Statement, Contact Info, and Signature": {
+                "description": "Certifies that the applicant understands and verifies the provided information.",
+                "questions": [
+                    "Can you read and understand English, or did you complete the form with an interpreter?",
+                    "Signature certifying under penalty of perjury that all contents are accurate."
+                ],
+                "instructions": "Sign and date the form before submission."
+            },
+            "Part 14: Interpreter's Contact Info and Certification": {
+                "description": "Required if an interpreter translated the application questions for you.",
+                "questions": [
+                    "Interpreter's full name, agency, contact details, and signature."
+                ],
+                "instructions": "Complete only if an interpreter helped you complete the application."
+            },
+            "Part 15: Contact Info and Signature of Person Preparing Form": {
+                "description": "Required if an attorney, legal representative, or preparer filled out the form.",
+                "questions": [
+                    "Preparer's contact details, business name, and signature."
+                ],
+                "instructions": "Complete only if someone else prepared the application on your behalf."
+            },
+            "Part 16: Signature at Interview (DO NOT COMPLETE UNTIL INTERVIEW)": {
+                "description": "Official confirmation performed in front of the USCIS officer.",
+                "questions": [
+                    "Affirmation that the contents of the application remain true and correct at the time of interview."
+                ],
+                "instructions": "Leave this section completely blank until instructed by the officer during your in-person interview."
+            },
+            "Part 17: Oath of Allegiance": {
+                "description": "The legal pledge of loyalty to the United States.",
+                "questions": [
+                    "Do you support the Constitution and form of government of the U.S.?",
+                    "Are you willing to take the full Oath of Allegiance to the United States?",
+                    "If required, are you willing to bear arms or perform noncombatant service for the U.S.?"
+                ],
+                "instructions": "Understand the responsibilities tied to allegiance before the final oath ceremony."
+            }
+        }
+        selected_n400_part = st.selectbox("Select N-400 Part to Review:", list(n400_structure.keys()), key="n400_part_select")
+        part_details = n400_structure[selected_n400_part]
+        st.subheader("📌 Overview")
+        st.info(part_details["description"])
+        st.subheader("❓ Key Questions Asked in this Section:")
+        for q in part_details["questions"]:
+            st.markdown(f"* {q}")
+        st.subheader("💡 USCIS Instructions & Tips:")
+        st.warning(part_details["instructions"])
+        
+    with sub_tab2:
+        st.subheader("Form N-400 Background & Interview Vocabulary")
+        st.markdown(
+            "USCIS officers evaluate your English comprehension using terms directly "
+            "tied to your N-400 application and background questions."
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("📚 Detailed N-400 Terms & Definitions")
+            vocab_detailed_data = {
+                "General Application": {
+                    "Habitually": {
+                        "meaning": "Often or repeatedly, as a regular pattern or habit.",
+                        "context": "Used in questions about alcohol consumption, support of dependents, or general conduct.",
+                        "officer_tip": "Be completely honest if asked about habits. Inconsistency with your written form can cause delays."
+                    },
+                    "Verify": {
+                        "meaning": "To prove, check, or establish that something is true, accurate, or correct.",
+                        "context": "Refers to reviewing documents, tax papers, or personal data entries.",
+                        "officer_tip": "Bring original copies of all identity and tax documents to the interview to verify instantly."
+                    },
+                    "Registered": {
+                        "meaning": "Signed up officially with a government body or official database.",
+                        "context": "Relates to selective service registration, voting rolls, or state registries.",
+                        "officer_tip": "Men aged 18-25 must show proof of Selective Service registration."
+                    },
+                },
+                "Family & Status": {
+                    "Marital Status": {
+                        "meaning": "Your current legal standing regarding marriage (single, married, divorced, or widowed).",
+                        "context": "Determines whether you file under the 3-year or 5-year permanent resident rule.",
+                        "officer_tip": "Bring marriage certificates, divorce decrees, or death certificates of past spouses."
+                    },
+                    "Spouse": {
+                        "meaning": "Your legally recognized husband or wife.",
+                        "context": "Core to evaluating joint tax returns, residency timelines, and family petitions.",
+                        "officer_tip": "If your spouse is a U.S. citizen, be prepared to answer questions about their background too."
+                    },
+                    "Dependent": {
+                        "meaning": "Someone who relies on you primarily for financial support, such as a minor child or relative.",
+                        "context": "Used when reviewing household members, child support obligations, and tax exemptions.",
+                        "officer_tip": "Keep records of child support payments if you have children from a previous relationship."
+                    },
+                },
+                "Legal & Proceedings": {
+                    "Swear": {
+                        "meaning": "To make a solemn, formal promise under oath, invoking truthfulness.",
+                        "context": "Done right at the beginning of your interview before answering any questions.",
+                        "officer_tip": "Understand that lying after swearing an oath constitutes perjury under federal law."
+                    },
+                    "Citation": {
+                        "meaning": "An official written notice, warning, or ticket issued by law enforcement (e.g., traffic violations).",
+                        "context": "Appears in Part 12 of the N-400 regarding arrests, detentions, and traffic tickets.",
+                        "officer_tip": "Minor traffic tickets under $500 usually don't block citizenship, but failing to disclose them will."
+                    },
+                    "Affiliation": {
+                        "meaning": "A formal connection, membership, or association with a club, group, or organization.",
+                        "context": "Scrutinizes past or present ties to political parties, community groups, or ideological associations.",
+                        "officer_tip": "Review all professional and social organizations you belong to before the interview."
+                    },
+                }
+            }
+            selected_category = st.selectbox(
+                "Select Vocabulary Category:", list(vocab_detailed_data.keys()), key="vocab_cat"
+            )
+            
+            category_words = vocab_detailed_data[selected_category]
+            selected_vocab = st.selectbox(
+                "Select a vocabulary word to review:", list(category_words.keys()), key="vocab_word"
+            )
+            
+            word_info = category_words[selected_vocab]
+            st.info(f"**Meaning:** {word_info['meaning']}")
+            st.markdown(f"**Application Context:** {word_info['context']}")
+            st.warning(f"💡 **Officer Tip:** {word_info['officer_tip']}")
+            
+        with col2:
+            st.subheader("⚠️ Common Background Risk Areas")
+            st.markdown("Select a risk area below to deep-dive into what USCIS checks and how to prepare:")
+            
+            risk_detailed_dict = {
+                "Taxes": {
+                    "question": "Have you ever failed to file a federal, state, or local tax return since you became a lawful permanent resident?",
+                    "risk_level": "High Risk",
+                    "pitfalls": "Omission of state returns, unfiled years due to low income, or failure to pay agreed-upon tax arrears.",
+                    "action_plan": "Pull official IRS tax transcripts for the last 3-5 years. If on a payment plan with the IRS, bring proof of regular payments."
+                },
+                "Organizations": {
+                    "question": "Have you ever been a member of, or associated with, any terrorist group, communist party, totalitarian organization, or militia?",
+                    "risk_level": "Critical Risk",
+                    "pitfalls": "Inadvertent membership in mandatory civic groups in home countries that held political affiliations.",
+                    "action_plan": "Consult an immigration attorney immediately if you had any historical affiliations with governmental or political mass organizations."
+                },
+                "Lie / Misrepresentation": {
+                    "question": "Have you ever given any false, fraudulent, or misleading information to a U.S. government official to gain entry or benefits?",
+                    "risk_level": "Severe Risk",
+                    "pitfalls": "Discrepancies between historical visa applications and your current N-400 disclosures.",
+                    "action_plan": "Disclose and clarify historical record discrepancies upfront with supporting documentation or legal counsel."
+                },
+                "Removal Proceedings": {
+                    "question": "Have you ever been placed in removal, exclusion, rescission, or deportation proceedings?",
+                    "risk_level": "High Risk",
+                    "pitfalls": "Failing to disclose past border administrative actions, expedited removals, or old immigration court notices.",
+                    "action_plan": "Obtain your complete A-file (Alien File) via FOIA requests to ensure all past immigration history is fully transparent."
+                }
+            }
+            selected_risk = st.selectbox("Select Background Risk Area:", list(risk_detailed_dict.keys()), key="risk_area")
+            risk_data = risk_detailed_dict[selected_risk]
+            
+            st.error(f"**Official Question:** `{risk_data['question']}`")
+            st.markdown(f"**Risk Level:** **{risk_data['risk_level']}**")
+            st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
+            st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
