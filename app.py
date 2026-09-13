@@ -4,7 +4,7 @@ import streamlit.components.v1 as components
 
 # Page Configuration
 st.set_page_config(
-    page_title="US Citizenship Test Prep for Payal", layout="wide"
+    page_title="Citizenship Test Prep for Payal", layout="wide"
 )
 
 # Initialize Session States
@@ -13,7 +13,7 @@ if "civics_score" not in st.session_state:
 if "quiz_active" not in st.session_state:
     st.session_state.quiz_active = False
 
-st.title("🇺🇸 U.S. Citizenship & Naturalization Prep Hub for Payal")
+st.title("🇺🇸 Citizenship & Naturalization Prep Hub for Payal")
 st.markdown(
     "Your comprehensive study companion for the N-400 application review, "
     "interview vocabulary, civics exam, and English reading/writing tests."
