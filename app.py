@@ -40,48 +40,113 @@ with tabs[0]:
   col1, col2 = st.columns(2)
 
   with col1:
-    st.subheader("📚 Key N-400 Terms & Synonyms")
-    vocab_data = {
+    st.subheader("📚 Detailed N-400 Terms & Definitions")
+    vocab_detailed_data = {
         "General Application": {
-            "Habitually": "Often or repeatedly.",
-            "Verify": "Prove that something is true.",
-            "Registered": "Signed up officially (e.g., to vote or selective service).",
+            "Habitually": {
+                "meaning": "Often or repeatedly, as a regular pattern or habit.",
+                "context": "Used in questions about alcohol consumption, support of dependents, or general conduct.",
+                "officer_tip": "Be completely honest if asked about habits. Inconsistency with your written form can cause delays."
+            },
+            "Verify": {
+                "meaning": "To prove, check, or establish that something is true, accurate, or correct.",
+                "context": "Refers to reviewing documents, tax papers, or personal data entries.",
+                "officer_tip": "Bring original copies of all identity and tax documents to the interview to verify instantly."
+            },
+            "Registered": {
+                "meaning": "Signed up officially with a government body or official database.",
+                "context": "Relates to selective service registration, voting rolls, or state registries.",
+                "officer_tip": "Men aged 18-25 must show proof of Selective Service registration."
+            },
         },
         "Family & Status": {
-            "Marital Status": "Whether you are single, married, divorced, or widowed.",
-            "Spouse": "Your husband or wife.",
-            "Dependent": "Someone you support financially, such as a child.",
+            "Marital Status": {
+                "meaning": "Your current legal standing regarding marriage (single, married, divorced, or widowed).",
+                "context": "Determines whether you file under the 3-year or 5-year permanent resident rule.",
+                "officer_tip": "Bring marriage certificates, divorce decrees, or death certificates of past spouses."
+            },
+            "Spouse": {
+                "meaning": "Your legally recognized husband or wife.",
+                "context": "Core to evaluating joint tax returns, residency timelines, and family petitions.",
+                "officer_tip": "If your spouse is a U.S. citizen, be prepared to answer questions about their background too."
+            },
+            "Dependent": {
+                "meaning": "Someone who relies on you primarily for financial support, such as a minor child or relative.",
+                "context": "Used when reviewing household members, child support obligations, and tax exemptions.",
+                "officer_tip": "Keep records of child support payments if you have children from a previous relationship."
+            },
         },
         "Legal & Proceedings": {
-            "Swear": "To promise under oath to tell the truth.",
-            "Citation": "An official written notice or traffic ticket from law enforcement.",
-            "Affiliation": "A formal connection or involvement with an organization.",
+            "Swear": {
+                "meaning": "To make a solemn, formal promise under oath, invoking truthfulness.",
+                "context": "Done right at the beginning of your interview before answering any questions.",
+                "officer_tip": "Understand that lying after swearing an oath constitutes perjury under federal law."
+            },
+            "Citation": {
+                "meaning": "An official written notice, warning, or ticket issued by law enforcement (e.g., traffic violations).",
+                "context": "Appears in Part 10 of the N-400 regarding arrests, detentions, and traffic tickets.",
+                "officer_tip": "Minor traffic tickets under $500 usually don't block citizenship, but failing to disclose them will."
+            },
+            "Affiliation": {
+                "meaning": "A formal connection, membership, or association with a club, group, or organization.",
+                "context": "Scrutinizes past or present ties to political parties, community groups, or ideological associations.",
+                "officer_tip": "Review all professional and social organizations you belong to before the interview."
+            },
         }
     }
 
     selected_category = st.selectbox(
-        "Select Vocabulary Category:", list(vocab_data.keys())
+        "Select Vocabulary Category:", list(vocab_detailed_data.keys()), key="vocab_cat"
     )
     
-    category_words = vocab_data[selected_category]
+    category_words = vocab_detailed_data[selected_category]
     selected_vocab = st.selectbox(
-        "Select a vocabulary word to review:", list(category_words.keys())
+        "Select a vocabulary word to review:", list(category_words.keys()), key="vocab_word"
     )
-    st.info(f"**Meaning:** {category_words[selected_vocab]}")
+    
+    word_info = category_words[selected_vocab]
+    st.info(f"**Meaning:** {word_info['meaning']}")
+    st.markdown(f"**Application Context:** {word_info['context']}")
+    st.warning(f"💡 **Officer Tip:** {word_info['officer_tip']}")
 
   with col2:
     st.subheader("⚠️ Common Background Risk Areas")
-    st.markdown("Select a risk area below to review what USCIS officers look for:")
+    st.markdown("Select a risk area below to deep-dive into what USCIS checks and how to prepare:")
     
-    risk_dict = {
-        "Taxes": "Have you ever failed to file a federal, state, or local tax return since you became a permanent resident? (Guidance: Ensure all past tax transcripts are accounted for and any payment plans are active.)",
-        "Organizations": "Have you ever been a member of, or associated with, any terrorist group, communist party, totalitarian organization, or terrorist organization?",
-        "Lie / Misrepresentation": "Have you ever given any false, fraudulent, or misleading information to a U.S. government official to gain entry or immigration benefits?",
-        "Removal Proceedings": "Have you ever been placed in removal, exclusion, rescission, or deportation proceedings, or received a notice to appear in immigration court?"
+    risk_detailed_dict = {
+        "Taxes": {
+            "question": "Have you ever failed to file a federal, state, or local tax return since you became a lawful permanent resident?",
+            "risk_level": "High Risk",
+            "pitfalls": "Omission of state returns, unfiled years due to low income, or failure to pay agreed-upon tax arrears.",
+            "action_plan": "Pull official IRS tax transcripts for the last 3-5 years. If on a payment plan with the IRS, bring proof of regular payments."
+        },
+        "Organizations": {
+            "question": "Have you ever been a member of, or associated with, any terrorist group, communist party, totalitarian organization, or militia?",
+            "risk_level": "Critical Risk",
+            "pitfalls": "Inadvertent membership in mandatory civic groups in home countries that held political affiliations.",
+            "action_plan": "Consult an immigration attorney immediately if you had any historical affiliations with governmental or political mass organizations."
+        },
+        "Lie / Misrepresentation": {
+            "question": "Have you ever given any false, fraudulent, or misleading information to a U.S. government official to gain entry or benefits?",
+            "risk_level": "Severe Risk",
+            "pitfalls": "Discrepancies between historical visa applications and your current N-400 disclosures.",
+            "action_plan": "Disclose and clarify historical record discrepancies upfront with supporting documentation or legal counsel."
+        },
+        "Removal Proceedings": {
+            "question": "Have you ever been placed in removal, exclusion, rescission, or deportation proceedings?",
+            "risk_level": "High Risk",
+            "pitfalls": "Failing to disclose past border administrative actions, expedited removals, or old immigration court notices.",
+            "action_plan": "Obtain your complete A-file (Alien File) via FOIA requests to ensure all past immigration history is fully transparent."
+        }
     }
 
-    selected_risk = st.selectbox("Select Background Risk Area:", list(risk_dict.keys()))
-    st.warning(f"**Review Guidance for [{selected_risk}]:**\n\n{risk_dict[selected_risk]}")
+    selected_risk = st.selectbox("Select Background Risk Area:", list(risk_detailed_dict.keys()), key="risk_area")
+    risk_data = risk_detailed_dict[selected_risk]
+    
+    st.error(f"**Official Question:** `{risk_data['question']}`")
+    st.markdown(f"**Risk Level:** **{risk_data['risk_level']}**")
+    st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
+    st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
 
 # ---------------------------------------------------------
 # TAB 2: Expanded Civics Question Bank (Full Official Pool)
@@ -756,7 +821,6 @@ with tabs[2]:
     if "active_write" in st.session_state:
       st.info("🔊 **Audio Prompt Loaded:** Click the play button below to listen to the officer's dictation.")
 
-      # Browser text-to-speech audio trigger widget
       text_to_speak = st.session_state.active_write.replace("'", "\\'")
       audio_html = f"""
             <div style="margin: 10px 0;">
@@ -769,7 +833,7 @@ with tabs[2]:
                     if ('speechSynthesis' in window) {{
                         window.speechSynthesis.cancel();
                         var utterance = new SpeechSynthesisUtterance('{text_to_speak}');
-                        utterance.rate = 0.9; // Slow down slightly for clarity
+                        utterance.rate = 0.9;
                         utterance.pitch = 1.0;
                         window.speechSynthesis.speak(utterance);
                     }} else {{
@@ -798,18 +862,18 @@ with tabs[2]:
           )
 
 # ---------------------------------------------------------
-# TAB 4: Mock Test Simulator
+# TAB 4: Mock Test Simulator (15 Questions)
 # ---------------------------------------------------------
 with tabs[3]:
-  st.header("Full Interview & Test Simulator")
+  st.header("Full Interview & Test Simulator (15 Questions)")
   st.markdown(
-      "Simulate the testing environment. You will be tested on 3 random civics"
-      " questions. Aim for 100% accuracy!"
+      "Simulate the actual testing environment. You will be tested on **15 random civics"
+      " questions**. Answer as many as you can accurately!"
   )
 
-  if st.button("Start Simulation Test"):
+  if st.button("Start 15-Question Simulation Test"):
     st.session_state.sim_questions = random.sample(
-        civics_bank, min(3, len(civics_bank))
+        civics_bank, min(15, len(civics_bank))
     )
     st.session_state.sim_started = True
 
@@ -822,9 +886,12 @@ with tabs[3]:
             f"Your answer for Q{i+1}", key=f"sim_ans_{i}"
         )
 
-      submitted = st.form_submit_button("Submit Answers")
+      submitted = st.form_submit_button("Submit All 15 Answers")
       if submitted:
-        st.subheader("Simulation Results")
+        st.subheader("Simulation Results & Scorecard")
+        score = 0
+        total_q = len(st.session_state.sim_questions)
+        
         for i, item in enumerate(st.session_state.sim_questions):
           st.write(f"**Q{i+1}:** {item['q']}")
           st.write(f"Your input: `{user_answers[i]}`")
