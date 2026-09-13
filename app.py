@@ -218,7 +218,7 @@ with tabs[2]:
   with col_write:
     st.subheader("✍️ Writing Practice & Dictation Checker")
     writing_pool = [
-        "Abrahams Lincoln was the president during the Civil War.",  # Note standard spelling check
+        "Abraham Lincoln was the president during the Civil War.",
         "The American flag has red, white, and blue stripes.",
         "Citizens vote for the President in November.",
         "George Washington is the father of our country.",
@@ -235,7 +235,6 @@ with tabs[2]:
     if "active_write" in st.session_state:
       user_writing = st.text_input("Type the sentence you heard word-for-word:")
       if st.button("Evaluate Writing"):
-        # Clean spacing/punctuation comparison
         clean_target = (
             st.session_state.active_write.strip().lower().replace(".", "")
         )
