@@ -16,7 +16,8 @@ if "quiz_active" not in st.session_state:
 st.title("🇺🇸 Citizenship & Naturalization Prep Hub for Payal")
 st.markdown(
     "Your comprehensive study companion for the N-400 application review, "
-    "interview vocabulary, civics exam, and expanded English reading/writing practice tests."
+    "interview vocabulary, civics exam, expanded English reading/writing practice tests, "
+    "and official interview video walkthroughs."
 )
 
 # Sidebar / Top Navigation Tabs
@@ -25,7 +26,8 @@ tabs = st.tabs([
     "🏛️ Civics Practice Bank",
     "📖 Reading & Writing Skills",
     "💡 Mock Test Simulator",
-    "📑 Form N-400 & Interview Vocabulary Hub",
+    "📑 Form N-400 & Interview Hub",
+    "📺 Interview Videos & Guide",
 ])
 
 # ---------------------------------------------------------
@@ -1077,3 +1079,61 @@ with tabs[4]:
             st.markdown(f"**Risk Level:** **{risk_data['risk_level']}**")
             st.markdown(f"**Common Pitfalls:** {risk_data['pitfalls']}")
             st.success(f"🛡️ **Preparation Strategy:** {risk_data['action_plan']}")
+
+# ---------------------------------------------------------
+# TAB 5: Interview Videos & Guide Hub
+# ---------------------------------------------------------
+with tabs[5]:
+    st.header("📺 N-400 Interview Videos & Preparation Guide")
+    st.markdown(
+        "Watch top-rated, official mock interview walkthroughs and expert guides to understand "
+        "what happens during the N-400 naturalization appointment."
+    )
+    
+    vid_col1, vid_col2 = st.columns(2)
+    
+    with vid_col1:
+        st.subheader("🎥 Featured Mock Interview & Guides")
+        
+        st.markdown("### 1. Full N-400 Naturalization Mock Interview (2026 Edition)")
+        st.markdown("A realistic walkthrough covering the check-in process, officer small talk, oath, N-400 review, and civics test.")
+        st.markdown("[🔗 Watch N-400 Naturalization Mock Interview on YouTube](https://www.youtube.com/watch?v=uf7dm7FpLwg)")
+        
+        st.markdown("### 2. How to Pass Your Citizenship Interview (Do's & Don'ts)")
+        st.markdown("Essential advice from immigration specialists on how to make a great first impression and present documents.")
+        st.markdown("[🔗 Watch N-400 Do's & Don'ts Guide on YouTube](https://www.youtube.com/watch?v=ZKxWL0ftNyY)")
+        
+        st.markdown("### 3. Complete N-400 Actual Interview Demo with Answers")
+        st.markdown("Detailed breakdown covering the 2008 and 2025 civics tests, English reading/writing, and personal background questions.")
+        st.markdown("[🔗 Watch Full USCIS Interview Demo on YouTube](https://www.youtube.com/watch?v=9J2Q_CyLIng)")
+
+    with vid_col2:
+        st.subheader("📋 What is Required During the Interview?")
+        st.markdown(
+            "Based on official USCIS guidelines, here is what you must bring and what happens during your appointment:"
+        )
+        
+        with st.expander("📁 Mandatory Documents to Bring"):
+            st.markdown("""
+            * **Green Card (Permanent Resident Card):** Your physical card (unexpired or valid extension notice).
+            * **State-Issued Identification:** Driver's license or state ID card.
+            * **All Valid Passports:** Current and expired passports used within your residency window.
+            * **Supporting Civil Documents:** Original marriage certificates, divorce decrees, or name change orders (if applicable).
+            * **Tax Documentation:** IRS tax transcripts for the last 3 to 5 years.
+            """)
+            
+        with st.expander("🏛️ Step-by-Step Interview Structure"):
+            st.markdown("""
+            1. **Check-In & Security:** Arrive 15–30 minutes early, clear security, and check in at the designated window with your interview notice.
+            2. **The Oath:** The officer will call you back, place you under oath, and ask you to swear or affirm to tell the truth.
+            3. **N-400 Application Review:** Line-by-line review of your personal info, employment, travel history, and moral character questions.
+            4. **English Test:** You will read 1 out of 3 sentences aloud and write 1 out of 3 dictated sentences.
+            5. **Civics Test:** You will answer oral civics questions (passing score depends on whether you take the 2008 or 2025 test version).
+            """)
+            
+        with st.expander("💡 Pro-Tips for Success"):
+            st.markdown("""
+            * **Dress Professionally:** Wear business-casual attire to show respect for the process.
+            * **Be Honest & Concise:** Only answer what the officer asks. If you don't remember a date, state clearly that you do not recall rather than guessing.
+            * **Ask for Clarification:** If you do not understand a vocabulary word or question on the N-400, politely ask the officer: *"Could you please explain what that word means?"*
+            """)
