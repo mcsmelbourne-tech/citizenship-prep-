@@ -16,10 +16,10 @@ if "quiz_active" not in st.session_state:
 st.title("🇺🇸 Citizenship & Naturalization Prep Hub for Payal")
 st.markdown(
     "Your comprehensive study companion for the N-400 application review, "
-    "interview vocabulary, civics exam, and English reading/writing tests."
+    "interview vocabulary, civics exam, and expanded English reading/writing practice tests."
 )
 
-# Sidebar / Top Navigation Tabs (N-400 Combined Tab moved to the end)
+# Sidebar / Top Navigation Tabs
 tabs = st.tabs([
     "📚 Vocabulary & Sentence Builder",
     "🏛️ Civics Practice Bank",
@@ -563,88 +563,207 @@ with tabs[1]:
         st.success(f"**Correct Answer:** {filtered_bank[q_idx]['a']}")
 
 # ---------------------------------------------------------
-# TAB 2: English Reading & Writing Skill Practice
+# TAB 2: English Reading & Writing Skill Practice (Expanded)
 # ---------------------------------------------------------
 with tabs[2]:
-    st.header("Interactive Reading & Writing Practice")
+    st.header("Expanded Interactive Reading & Writing Practice Suite")
     st.markdown(
         "To pass the English requirement, you must correctly read out loud 1 of "
-        "3 sentences and write 1 of 3 dictated sentences correctly."
+        "3 sentences and write 1 of 3 dictated sentences correctly. Use the expanded practice modules below to master your skills."
     )
     
-    col_read, col_write = st.columns(2)
-    with col_read:
+    eng_sub_tab1, eng_sub_tab2, eng_sub_tab3 = st.tabs([
+        "📖 Reading Practice Bank & Test", 
+        "✍️ Writing Dictation Practice & Test", 
+        "📝 Timed Full English Mock Exam (3 Reading / 3 Writing)"
+    ])
+    
+    # Expanded Reading Pool (15 sentences)
+    reading_pool = [
+        "President Abraham Lincoln freed the slaves.",
+        "Citizens have the right to vote in elections.",
+        "The United States has fifty states.",
+        "March is the third month of the year.",
+        "What is the capital of your state?",
+        "George Washington was the first president.",
+        "The American flag is red, white, and blue.",
+        "New York City was the first capital of the United States.",
+        "Labor Day is celebrated in September.",
+        "Thanksgiving is celebrated in November.",
+        "Alaska is the largest state in the country.",
+        "We elect the President in November.",
+        "The Constitution is the supreme law of the land.",
+        "People come to America for freedom.",
+        "Citizens pay taxes to the government."
+    ]
+    
+    # Expanded Writing Pool (15 sentences)
+    writing_pool = [
+        "Abraham Lincoln was the president during the Civil War.",
+        "The American flag has red, white, and blue stripes.",
+        "Citizens vote for the President in November.",
+        "George Washington is the father of our country.",
+        "Capitalism is the economic system of the United States.",
+        "The capital of the United States is Washington, D.C.",
+        "The Bill of Rights protects our freedom of speech.",
+        "Every citizen has the right to vote.",
+        "July fourth is Independence Day.",
+        "Tax returns are due on April fifteenth.",
+        "There are one hundred senators in Congress.",
+        "The Supreme Court meets in Washington, D.C.",
+        "Immigrants come to the United States to live.",
+        "California shares a border with Mexico.",
+        "Canada is located north of the United States."
+    ]
+
+    with eng_sub_tab1:
         st.subheader("📖 Reading Practice Engine")
-        reading_pool = [
-            "President Abraham Lincoln freed the slaves.",
-            "Citizens have the right to vote in elections.",
-            "The United States has fifty states.",
-            "March is the third month of the year.",
-            "What is the capital of your state?",
-        ]
-        if st.button("Generate Reading Prompt"):
-            st.session_state.active_read = random.choice(reading_pool)
-        if "active_read" in st.session_state:
-            st.warning(
-                f"**Read this sentence aloud clearly:**\n\n> `{st.session_state.active_read}`"
-            )
-    with col_write:
-        st.subheader("✍️ Writing Practice & Dictation Checker")
-        writing_pool = [
-            "Abraham Lincoln was the president during the Civil War.",
-            "The American flag has red, white, and blue stripes.",
-            "Citizens vote for the President in November.",
-            "George Washington is the father of our country.",
-            "Capitalism is the economic system of the United States.",
-        ]
+        st.markdown("Practice reading official USCIS sentences aloud. Click below to generate a new random sentence prompt.")
         
-        if st.button("Get Dictation Prompt Audio"):
-            st.session_state.active_write = random.choice(writing_pool)
-        if "active_write" in st.session_state:
-            st.info("🔊 **Audio Prompt Loaded:** Click the play button below to listen to the officer's dictation.")
-            text_to_speak = st.session_state.active_write.replace("'", "\\'")
-            audio_html = f"""
-            <div style="margin: 10px 0;">
-                <button onclick="speakText()" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">
-                    ▶️ Play Audio Dictation
-                </button>
-            </div>
-            <script>
-                function speakText() {{
-                    if ('speechSynthesis' in window) {{
-                        window.speechSynthesis.cancel();
-                        var utterance = new SpeechSynthesisUtterance('{text_to_speak}');
-                        utterance.rate = 0.9;
-                        utterance.pitch = 1.0;
-                        window.speechSynthesis.speak(utterance);
-                    }} else {{
-                        alert('Sorry, your browser does not support text-to-speech audio.');
-                    }}
-                }}
-            </script>
-            """
-            components.html(audio_html, height=60)
-            user_writing = st.text_input("Type the sentence you heard word-for-word:")
-            if st.button("Evaluate Writing"):
-                clean_target = (
-                    st.session_state.active_write.strip().lower().replace(".", "")
+        col_r1, col_r2 = st.columns([1, 2])
+        with col_r1:
+            if st.button("Generate Reading Prompt", key="gen_read_single"):
+                st.session_state.active_read = random.choice(reading_pool)
+        
+        if "active_read" in st.session_state:
+            with col_r2:
+                st.warning(
+                    f"**Read this sentence aloud clearly:**\n\n> `{st.session_state.active_read}`"
                 )
-                clean_user = user_writing.strip().lower().replace(".", "")
-                if clean_target == clean_user:
-                    st.success(
-                        "✅ Perfect! Your spelling, capitalization, and phrasing match USCIS standards."
+                
+        st.divider()
+        st.markdown("### Full Reading Practice Bank (All 15 Official Prompts)")
+        for idx, r_sentence in enumerate(reading_pool, 1):
+            with st.expander(f"Reading Prompt #{idx}"):
+                st.markdown(f"**Target Sentence:** `{r_sentence}`")
+                st.info("Tip: Speak at a moderate, steady pace with clear articulation.")
+
+    with eng_sub_tab2:
+        st.subheader("✍️ Writing Practice & Audio Dictation Checker")
+        st.markdown("Listen to the officer's dictation audio prompt and type the sentence word-for-word.")
+        
+        col_w1, col_w2 = st.columns([1, 2])
+        with col_w1:
+            if st.button("Get Dictation Prompt Audio", key="gen_write_single"):
+                st.session_state.active_write = random.choice(writing_pool)
+                
+        if "active_write" in st.session_state:
+            with col_w2:
+                st.info("🔊 **Audio Prompt Loaded:** Click the play button below to listen.")
+                text_to_speak = st.session_state.active_write.replace("'", "\\'")
+                audio_html = f"""
+                <div style="margin: 10px 0;">
+                    <button onclick="speakText()" style="background-color: #2e7d32; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                        ▶️ Play Audio Dictation
+                    </button>
+                </div>
+                <script>
+                    function speakText() {{
+                        if ('speechSynthesis' in window) {{
+                            window.speechSynthesis.cancel();
+                            var utterance = new SpeechSynthesisUtterance('{text_to_speak}');
+                            utterance.rate = 0.9;
+                            utterance.pitch = 1.0;
+                            window.speechSynthesis.speak(utterance);
+                        }} else {{
+                            alert('Sorry, your browser does not support text-to-speech audio.');
+                        }}
+                    }}
+                </script>
+                """
+                components.html(audio_html, height=60)
+                user_writing = st.text_input("Type the sentence you heard word-for-word:", key="single_write_input")
+                if st.button("Evaluate Writing", key="eval_single_write"):
+                    clean_target = (
+                        st.session_state.active_write.strip().lower().replace(".", "").replace(",", "")
                     )
-                else:
-                    st.error(
-                        "❌ Minor error detected. Target sentence should be written as:\n\n"
-                        f"`{st.session_state.active_write}`"
-                    )
+                    clean_user = user_writing.strip().lower().replace(".", "").replace(",", "")
+                    if clean_target == clean_user:
+                        st.success(
+                            "✅ Perfect! Your spelling, capitalization, and phrasing match USCIS standards."
+                        )
+                    else:
+                        st.error(
+                            "❌ Minor error detected. Target sentence should be written as:\n\n"
+                            f"`{st.session_state.active_write}`"
+                        )
+                        
+        st.divider()
+        st.markdown("### Full Writing Practice Bank (All 15 Official Prompts)")
+        for idx, w_sentence in enumerate(writing_pool, 1):
+            with st.expander(f"Writing Prompt #{idx}"):
+                st.markdown(f"**Target Dictation Sentence:** `{w_sentence}`")
+
+    with eng_sub_tab3:
+        st.subheader("📝 Full English Mock Test Simulator")
+        st.markdown(
+            "Simulate the actual USCIS English test format: **3 Reading sentences** (to read aloud and self-check) "
+            "and **3 Writing sentences** (via dictation audio and text entry)."
+        )
+        
+        if st.button("Start New English Mock Test Session"):
+            st.session_state.mock_read_set = random.sample(reading_pool, 3)
+            st.session_state.mock_write_set = random.sample(writing_pool, 3)
+            st.session_state.mock_test_active = True
+            
+        if st.session_state.get("mock_test_active", False):
+            st.markdown("---")
+            st.subheader("Part 1: Reading Test (Read 3 Sentences Aloud)")
+            for i, r_item in enumerate(st.session_state.mock_read_set, 1):
+                st.markdown(f"**Reading Item {i}:**")
+                st.warning(f"> `{r_item}`")
+                st.caption("Check your pronunciation and confirm you read it clearly.")
+                
+            st.markdown("---")
+            st.subheader("Part 2: Writing Dictation Test (Listen & Type)")
+            mock_user_answers = {}
+            for j, w_item in enumerate(st.session_state.mock_write_set, 1):
+                st.markdown(f"**Writing Item {j}:**")
+                w_spoken = w_item.replace("'", "\\'")
+                w_audio_id = f"mock_audio_{j}"
+                w_html = f"""
+                <div style="margin: 5px 0;">
+                    <button onclick="speakMock{j}()" style="background-color: #1565c0; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                        ▶️ Play Audio Dictation #{j}
+                    </button>
+                </div>
+                <script>
+                    function speakMock{j}() {{
+                        if ('speechSynthesis' in window) {{
+                            window.speechSynthesis.cancel();
+                            var utterance = new SpeechSynthesisUtterance('{w_spoken}');
+                            utterance.rate = 0.9;
+                            utterance.pitch = 1.0;
+                            window.speechSynthesis.speak(utterance);
+                        }}
+                    }}
+                </script>
+                """
+                components.html(w_html, height=50)
+                mock_user_answers[j] = st.text_input(f"Your transcription for Writing Item {j}:", key=f"mock_w_input_{j}")
+                
+            if st.button("Submit Mock English Test"):
+                st.subheader("📊 Mock English Test Scorecard")
+                correct_count = 0
+                for j, w_item in enumerate(st.session_state.mock_write_set, 1):
+                    ans = mock_user_answers[j]
+                    clean_target = w_item.strip().lower().replace(".", "").replace(",", "")
+                    clean_user = ans.strip().lower().replace(".", "").replace(",", "")
+                    if clean_target == clean_user:
+                        st.success(f"**Writing Item {j}:** Correct! ✅")
+                        correct_count += 1
+                    else:
+                        st.error(f"**Writing Item {j}:** Incorrect ❌\n* Expected: `{w_item}`\n* Your entry: `{ans}`")
+                st.markdown(f"### Overall Dictation Score: **{correct_count} / 3**")
+                if correct_count >= 1:
+                    st.balloons()
+                    st.success("🎉 Great job! Passing just 1 writing sentence and 1 reading sentence satisfies the USCIS English requirement.")
 
 # ---------------------------------------------------------
-# TAB 3: Mock Test Simulator (15 Questions)
+# TAB 3: Mock Test Simulator (15 Civics Questions)
 # ---------------------------------------------------------
 with tabs[3]:
-    st.header("Full Interview & Test Simulator (15 Questions)")
+    st.header("Full Interview & Civics Test Simulator (15 Questions)")
     st.markdown(
         "Simulate the actual testing environment. You will be tested on **15 random civics "
         "questions**. Answer as many as you can accurately!"
@@ -672,7 +791,7 @@ with tabs[3]:
                     st.divider()
 
 # ---------------------------------------------------------
-# TAB 4 (Last Tab): Form N-400 Breakdown & Interview Vocabulary Hub
+# TAB 4: Form N-400 Breakdown & Interview Vocabulary Hub
 # ---------------------------------------------------------
 with tabs[4]:
     st.header("Form N-400 Breakdown & Interview Vocabulary Hub")
